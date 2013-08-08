@@ -1,5 +1,5 @@
-def read_sentences ():
-    handler = file("corpus.txt")
+def read_sentences (filename="corpus.txt"):
+    handler = file(filename)
     lines = handler.readlines()
     handler.close()
 
