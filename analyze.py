@@ -41,7 +41,34 @@ def glyph_transitions (words, glyphs):
 
     return trans
 
-def output_transitions (trans, glyphs):
+def output_transitions_1st_glyph (trans, glyphs):
+    print "<table>"
+    print htmltable.row(['Symbol', 'Transition', 'Occurrences/Total (percentage)'])
+
+    for glyph_from in glyphs:
+        # sum total transitions
+        count = 0
+        for glyph_to in glyphs:
+            count += trans[glyph_to][glyph_from]
+        # output result
+        if count == 0:
+            continue
+
+        first_entry = True
+        for glyph_to in glyphs:
+            t = trans[glyph_to][glyph_from]
+            if t > 0:
+                if not first_entry:
+                    cells = ['&nbsp;', glyph_to, '%i/%i (%.2f%%)' % (t, count, (t*100.)/count)]
+                else:
+                    cells = [glyph_from, glyph_to, '%i/%i (%.2f%%)' % (t, count, (t*100.)/count)]
+                    first_entry = False
+                print htmltable.row(cells)
+
+    print "</table>"    
+
+
+def output_transitions_2nd_glyph (trans, glyphs):
     print "<table>"
     print htmltable.row(['Symbol', 'Transition', 'Occurrences/Total (percentage)'])
 
@@ -82,6 +109,7 @@ if __name__ == "__main__":
 
     # get transitions and output them
     transitions = glyph_transitions(words, glyphs)
-    output_transitions(transitions, glyphs)
+    output_transitions_1st_glyph(transitions, glyphs)
+    #output_transitions_2nd_glyph(transitions, glyphs)
 
     #word_length(words)
