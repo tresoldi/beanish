@@ -43,7 +43,7 @@ def glyph_transitions (words, glyphs):
 
 def output_transitions (trans, glyphs):
     print "<table>"
-    htmltable.row(['Symbol', 'Transition', 'Occurrences (percentage)'])
+    print htmltable.row(['Symbol', 'Transition', 'Occurrences/Total (percentage)'])
 
     for glyph_from in glyphs:
         # sum total transitions
@@ -59,9 +59,9 @@ def output_transitions (trans, glyphs):
             t = trans[glyph_from][glyph_to]
             if t > 0:
                 if not first_entry:
-                    cells = ['&nbsp;', glyph_to, '%i (%.2f%%)' % (t, (t*100.)/count)]
+                    cells = ['&nbsp;', glyph_to, '%i/%i (%.2f%%)' % (t, count, (t*100.)/count)]
                 else:
-                    cells = [glyph_from, glyph_to, '%i (%.2f%%)' % (t, (t*100.)/count)]
+                    cells = [glyph_from, glyph_to, '%i/%i (%.2f%%)' % (t, count, (t*100.)/count)]
                     first_entry = False
                 print htmltable.row(cells)
     print "</table>"    
@@ -77,7 +77,7 @@ def word_length (words):
 if __name__ == "__main__":
     # collect initial information
     sentences = corpus.read_sentences()
-    words = unique_words(sentences, boundaries=True)
+    words = unique_words(sentences, boundaries=True, reverse=True)
     glyphs = unique_glyphs(words)
 
     # get transitions and output them
